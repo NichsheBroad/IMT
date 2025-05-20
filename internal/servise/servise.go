@@ -1,28 +1,37 @@
 package servise
 
 import (
+	"bufio"
 	"fmt"
 	"math"
+	"os"
+	"strconv"
+	"strings"
 )
 
 const returnMessage = "Ваш индекс массы тела: %.2f"
 
 func GetPositiveInput(prompt string) float64 {
-	var value float64
+	scanner := bufio.NewScanner(os.Stdin)
+
 	for {
 		fmt.Print(prompt)
-		_, err := fmt.Scanln(&value)
+		scanner.Scan()
+		input := scanner.Text()
+
+		value, err := strconv.ParseFloat(input, 64)
 		if err != nil {
-			fmt.Println("Ошибка ввода. Попробуйте снова.")
+			fmt.Println("Ошибка: введите числовое значение")
 			continue
 		}
+
 		if value <= 0 {
-			fmt.Println("Число должно быть больше нуля. Попробуйте снова.")
+			fmt.Println("Число должно быть больше нуля")
 			continue
 		}
-		break
+
+		return value
 	}
-	return value
 }
 
 func CalculateIMT(height, weight float64) float64 {
@@ -46,4 +55,19 @@ func ShowIMTMessage(imt float64) {
 	default:
 		fmt.Printf(returnMessage+", ожирение III степени. Обратитесь к врачу.\n", imt)
 	}
+}
+
+func CheckRepeateCalcukation() bool {
+
+	var answer string
+
+	fmt.Println("Хотите еще раз сделать расчёт? Напишите Да или Нет: ")
+	fmt.Scan(&answer)
+
+	answer = strings.ToUpper(answer)
+
+	if answer == "ДА" {
+		return true
+	}
+	return false
 }

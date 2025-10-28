@@ -7,6 +7,12 @@ import (
 
 func main() {
 
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recover: ", r)
+		}
+	}()
+
 	fmt.Println("__Ку вы начали работу с IMT(Калькулятором индекса массы тела!__")
 
 	for {
